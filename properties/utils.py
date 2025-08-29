@@ -6,12 +6,11 @@ CACHE_TIMEOUT = 3600  # 1 hour in seconds
 
 def get_all_properties():
     # Try to fetch from cache
-    properties = cache.get(CACHE_KEY)
+    properties = cache.get("all_properties")
 
     if properties is None:
         # Cache miss → fetch from DB
         properties = list(Property.objects.all())
         # Save to cache
-        cache.set(CACHE_KEY, properties, CACHE_TIMEOUT)
-
+        cache.set("all_properties", properties, 3600)
     return properties
