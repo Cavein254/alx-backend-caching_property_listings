@@ -5,6 +5,7 @@ from django.http import JsonResponse
 from .models import Property
 from .serializers import PropertySerializer
 from .utils import get_all_properties
+from .utils import get_redis_cache_metrics
 
 class PropertyListCreateView(generics.ListCreateAPIView):
     serializer_class = PropertySerializer
@@ -26,3 +27,7 @@ def property_list(request):
         properties = Property.objects.all().order_by("-created_at")
         serializer = PropertySerializer(properties, many=True)
         return JsonResponse(serializer.data, safe=False)
+    
+def cache_metrics(request):
+    metrics = get_redis_cache_metrics()
+    return JsonResponse(metrics)
